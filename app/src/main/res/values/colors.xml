@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#FFFFFF</color>
+    <color name="colorPrimaryDark">#E7E7E7</color>
+    <color name="theme_accent">#4286f4</color>
+    <color name="colorPrimaryD">#212121</color>
+    <color name="colorPrimaryDDark">#212121</color>
+
+    <color name="inverted">#212121</color>
+    <color name="ic_background">#333333</color>
+
+    <color name="colorBackgroundDLight">#E9E9E9</color>
+    <color name="colorBackgroundDDark">#353535</color>
+
+    <!-- Color Palette-->
+    <color name="iconic_blue">#c12774eb</color>
+    <color name="some_green">#c100b68c</color>
+    <color name="deep_orange">#c1FF5722</color>
+    <color name="semiBlack">#7f939393</color>
+    <color name="scrim">#22000000</color>
+    <color name="colorOrange">#ff5722</color>
+    <color name="colorGreen">#00b68c</color>
+
+    <color name="chip_active">#e9fcfcfc</color>
+    <color name="chip_inctive">#E9464646</color>
+
+
+    <color name="dt_tab_color">?android:colorAccent</color>
+    <color name="dt_tab_text_color">@color/dt_tab_color</color>
+    <color name="dt_tab_inactive_text_color">?android:colorAccent</color>
+    <color name="dt_tab_background_color">@android:color/transparent</color>
+    <color name="card_background">#fffafafa</color>
+</resources>

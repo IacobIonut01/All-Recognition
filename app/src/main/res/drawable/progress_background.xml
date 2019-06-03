@@ -1,0 +1,22 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@android:id/background"
+        android:top="4dp"
+        android:bottom="6dp">
+        <shape android:tint="?android:attr/colorAccent">
+            <corners android:radius="8dp"/>
+            <solid android:color="#31FFFFFF"/>
+        </shape>
+    </item>
+
+    <item android:id="@android:id/progress"
+        android:top="4dp"
+        android:bottom="6dp">
+
+        <scale android:scaleWidth="100%">
+            <shape>
+                <corners android:radius="8dp"/>
+                <solid android:color="?android:attr/colorAccent"/>
+            </shape>
+        </scale>
+    </item>
+</layer-list>
