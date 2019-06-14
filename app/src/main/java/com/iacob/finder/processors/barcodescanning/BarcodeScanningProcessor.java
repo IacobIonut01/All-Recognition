@@ -29,6 +29,7 @@ import com.iacob.finder.common.BitmapUtils;
 import com.iacob.finder.common.CameraImageGraphic;
 import com.iacob.finder.common.FrameMetadata;
 import com.iacob.finder.common.GraphicOverlay;
+import com.iacob.finder.common.SharedItems;
 import com.iacob.finder.vision.VisionProcessorBase;
 
 import java.io.IOException;
@@ -81,6 +82,7 @@ public class BarcodeScanningProcessor extends VisionProcessorBase<List<FirebaseV
         }
         for (int i = 0; i < barcodes.size(); ++i) {
             FirebaseVisionBarcode barcode = barcodes.get(i);
+            new SharedItems(graphicOverlay.getContext()).setBarcode(barcode.getRawValue());
             BarcodeGraphic barcodeGraphic = new BarcodeGraphic(graphicOverlay, barcode);
             graphicOverlay.add(barcodeGraphic);
         }

@@ -35,9 +35,6 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.List;
 
-/**
- * Processor for the text recognition demo.
- */
 public class TextRecognitionProcessor extends VisionProcessorBase<FirebaseVisionText> {
 
     private static final String TAG = "TextRecProc";
@@ -74,6 +71,12 @@ public class TextRecognitionProcessor extends VisionProcessorBase<FirebaseVision
                     originalCameraImage);
             graphicOverlay.add(imageGraphic);
         }
+        if (results.getText() == null) {
+            return; // TODO: investigate why this is needed
+        }
+        SharedItems sharedItems = new SharedItems(graphicOverlay.getContext());
+        //Log.d(TAG, "detected text is: " + results.getText());
+        sharedItems.setText(results.getText().length() > 0 ? results.getText() : "No text found");
         List<FirebaseVisionText.TextBlock> blocks = results.getTextBlocks();
         for (int i = 0; i < blocks.size(); i++) {
             List<FirebaseVisionText.Line> lines = blocks.get(i).getLines();

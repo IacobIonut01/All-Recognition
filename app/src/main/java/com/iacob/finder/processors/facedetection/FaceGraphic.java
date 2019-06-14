@@ -27,6 +27,8 @@ import com.google.firebase.ml.vision.face.FirebaseVisionFaceLandmark;
 import com.iacob.finder.R;
 import com.iacob.finder.common.GraphicOverlay;
 
+import java.util.Locale;
+
 /**
  * Graphic instance for rendering face position, orientation, and landmarks within an associated
  * graphic overlay view.
@@ -87,7 +89,7 @@ public class FaceGraphic extends GraphicOverlay.Graphic {
         canvas.drawCircle(x, y - 4 * ID_Y_OFFSET, FACE_POSITION_RADIUS, facePositionPaint);
         canvas.drawText("id: " + face.getTrackingId(), x + ID_X_OFFSET, y - 3 * ID_Y_OFFSET, idPaint);
         canvas.drawText(
-                "happiness: " + String.format("%.1f", Math.abs(face.getSmilingProbability()) * 100) + " %",
+                "happiness: " + String.format(Locale.ENGLISH, "%.1f", Math.abs(face.getSmilingProbability() * 100))  + " %",
                 x + ID_X_OFFSET * 3,
                 y - 2 * ID_Y_OFFSET,
                 idPaint);
@@ -122,7 +124,7 @@ public class FaceGraphic extends GraphicOverlay.Graphic {
         float top = y - yOffset;
         float right = x + xOffset;
         float bottom = y + yOffset;
-        canvas.drawRect(left, top, right, bottom, boxPaint);
+        //canvas.drawRect(left, top, right, bottom, boxPaint);
 
         // draw landmarks
         drawLandmarkPosition(canvas, face, FirebaseVisionFaceLandmark.MOUTH_BOTTOM);

@@ -41,9 +41,6 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.List;
 
-/**
- * Face Detector Demo.
- */
 public class FaceDetectionProcessor extends VisionProcessorBase<List<FirebaseVisionFace>> {
 
     private static final String TAG = "FaceDetectionProcessor";
@@ -98,6 +95,7 @@ public class FaceDetectionProcessor extends VisionProcessorBase<List<FirebaseVis
                     frameMetadata != null ? frameMetadata.getCameraFacing() :
                             Camera.CameraInfo.CAMERA_FACING_BACK;
             FaceGraphic faceGraphic = new FaceGraphic(graphicOverlay, face, cameraFacing, overlayBitmap);
+            new SharedItems(graphicOverlay.getContext()).setHappiness(face.getSmilingProbability());
             graphicOverlay.add(faceGraphic);
         }
         graphicOverlay.postInvalidate();

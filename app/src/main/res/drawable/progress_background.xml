@@ -3,7 +3,7 @@
         android:top="4dp"
         android:bottom="6dp">
         <shape android:tint="?android:attr/colorAccent">
-            <corners android:radius="8dp"/>
+            <corners android:radius="24dp"/>
             <solid android:color="#31FFFFFF"/>
         </shape>
     </item>
@@ -14,7 +14,7 @@
 
         <scale android:scaleWidth="100%">
             <shape>
-                <corners android:radius="8dp"/>
+                <corners android:radius="24dp"/>
                 <solid android:color="?android:attr/colorAccent"/>
             </shape>
         </scale>

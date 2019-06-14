@@ -19,6 +19,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.github.mikephil.charting.data.PieEntry;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.ml.vision.FirebaseVision;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
@@ -28,15 +29,14 @@ import com.iacob.finder.common.BitmapUtils;
 import com.iacob.finder.common.CameraImageGraphic;
 import com.iacob.finder.common.FrameMetadata;
 import com.iacob.finder.common.GraphicOverlay;
+import com.iacob.finder.common.SharedItems;
 import com.iacob.finder.vision.VisionProcessorBase;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Custom Image Classifier Demo.
- */
 public class ImageLabelingProcessor extends VisionProcessorBase<List<FirebaseVisionImageLabel>> {
 
     private static final String TAG = "ImageLabelingProcessor";
@@ -68,10 +68,22 @@ public class ImageLabelingProcessor extends VisionProcessorBase<List<FirebaseVis
             @NonNull FrameMetadata frameMetadata,
             @NonNull GraphicOverlay graphicOverlay) {
         graphicOverlay.clear();
+        new SharedItems(graphicOverlay.getContext()).resetChartData();
+        ArrayList<PieEntry> entries = new ArrayList<>();
         if (originalCameraImage != null) {
             CameraImageGraphic imageGraphic = new CameraImageGraphic(graphicOverlay, originalCameraImage);
             graphicOverlay.add(imageGraphic);
         }
+        for (int i = 0; i < (labels.size() >= 1 && labels.size() < 4 ? 1 : 4); ++i) {
+            FirebaseVisionImageLabel label = labels.get(i);
+            //Log.d(TAG, "cloud label: " + label.getText());
+            if (label.getText() != null) {
+                //labelsStr.add((label.getText()));
+                entries.add(new PieEntry((int) (Math.abs(label.getConfidence()) * 100), label.getText()));
+            }
+        }
+        entries.sort((o1, o2) -> Float.compare(o2.getValue(), o1.getValue()));
+        new SharedItems(graphicOverlay.getContext()).addAllChartEntry(entries);
         LabelGraphic labelGraphic = new LabelGraphic(graphicOverlay, labels);
         graphicOverlay.add(labelGraphic);
         graphicOverlay.postInvalidate();

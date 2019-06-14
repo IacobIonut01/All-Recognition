@@ -14,6 +14,7 @@
 package com.iacob.finder.common;
 
 import android.graphics.Bitmap;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 
@@ -23,11 +24,11 @@ import java.nio.ByteBuffer;
 public interface VisionImageProcessor {
 
   /** Processes the images with the underlying machine learning models. */
-  void process(ByteBuffer data, FrameMetadata frameMetadata, GraphicOverlay graphicOverlay)
+  void process(ByteBuffer data, FrameMetadata frameMetadata, GraphicOverlay graphicOverlay, ProgressBar progressBar)
   ;
 
   /** Processes the bitmap images. */
-  void process(Bitmap bitmap, GraphicOverlay graphicOverlay);
+  void process(Bitmap bitmap, GraphicOverlay graphicOverlay, ProgressBar progressBar);
 
   /** Stops the underlying machine learning model and release resources. */
   void stop();

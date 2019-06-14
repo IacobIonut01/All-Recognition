@@ -42,8 +42,10 @@
     <style name="BottomSheetDialogTheme" parent="BaseBottomSheetDialog">
         <item name="colorAccent">@color/theme_accent</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowTranslucentNavigation">false</item>
         <item name="android:navigationBarColor">?colorPrimary</item>
+        <item name="android:windowLightNavigationBar">true</item>
     </style>
 
     <style name="RoundedDialog">

@@ -15,6 +15,8 @@ package com.iacob.finder.vision;
 
 import android.graphics.Bitmap;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import androidx.annotation.GuardedBy;
 import androidx.annotation.NonNull;
@@ -26,7 +28,6 @@ import com.google.firebase.ml.vision.common.FirebaseVisionImageMetadata;
 import com.iacob.finder.common.BitmapUtils;
 import com.iacob.finder.common.FrameMetadata;
 import com.iacob.finder.common.GraphicOverlay;
-import com.iacob.finder.common.SharedItems;
 import com.iacob.finder.common.VisionImageProcessor;
 
 import java.nio.ByteBuffer;
@@ -57,13 +58,16 @@ public abstract class VisionProcessorBase<T> implements VisionImageProcessor {
 
     public boolean supportLiveProcessing = false;
 
+    private ProgressBar progressBar;
+
     public VisionProcessorBase() {
     }
 
     @Override
     public synchronized void process(
             ByteBuffer data, final FrameMetadata frameMetadata, final GraphicOverlay
-            graphicOverlay) {
+            graphicOverlay, ProgressBar progressBar) {
+        this.progressBar = progressBar;
         latestImage = data;
         latestImageMetaData = frameMetadata;
         if (processingImage == null && processingMetaData == null) {
@@ -74,8 +78,10 @@ public abstract class VisionProcessorBase<T> implements VisionImageProcessor {
     // Bitmap version
     @Override
     public void process(Bitmap bitmap, final GraphicOverlay
-            graphicOverlay) {
-        detectInVisionImage(null /* bitmap */, FirebaseVisionImage.fromBitmap(bitmap), null,
+            graphicOverlay, ProgressBar progressBar) {
+        this.progressBar = progressBar;
+        progressBar.setVisibility(View.VISIBLE);
+        detectInVisionImage(bitmap /* bitmap */, FirebaseVisionImage.fromBitmap(bitmap), null,
                 graphicOverlay);
     }
 
@@ -104,21 +110,18 @@ public abstract class VisionProcessorBase<T> implements VisionImageProcessor {
     }
 
     private void detectInVisionImage(final Bitmap originalCameraImage, FirebaseVisionImage image, final FrameMetadata metadata, final GraphicOverlay graphicOverlay) {
-        if (new SharedItems(graphicOverlay.getContext()).shouldShowGraphics())
-            detectInImage(image)
-                    .addOnSuccessListener(
-                            results -> {
-                                VisionProcessorBase.this.onSuccess(originalCameraImage, results,
-                                        metadata,
-                                        graphicOverlay);
-                                processLatestImage(graphicOverlay);
-                            })
-                    .addOnFailureListener(
-                            VisionProcessorBase.this::onFailure);
-        else {
-            VisionProcessorBase.this.drawPreview(graphicOverlay, originalCameraImage);
-            processLatestImage(graphicOverlay);
-        }
+        detectInImage(image)
+                .addOnSuccessListener(
+                        results -> {
+                            VisionProcessorBase.this.onSuccess(originalCameraImage, results,
+                                    metadata,
+                                    graphicOverlay);
+                            progressBar.setVisibility(View.INVISIBLE);
+                        })
+                .addOnFailureListener(e -> {
+                    onFailure(e);
+                    progressBar.setVisibility(View.INVISIBLE);
+                });
     }
 
     @Override

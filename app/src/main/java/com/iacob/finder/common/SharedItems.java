@@ -32,6 +32,16 @@ public class SharedItems {
         return prefs.getString("recognisedText", "No text");
     }
 
+    public void setBarcode(CharSequence text) {
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString("recognisedCode", text.toString());
+        editor.apply();
+    }
+
+    public String getBarcode() {
+        return prefs.getString("recognisedCode", "Invalid barcode");
+    }
+
     public void setNoseID(int id) {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putInt("noseID", id);
@@ -42,6 +52,16 @@ public class SharedItems {
         return prefs.getInt("noseID", R.drawable.clown_nose);
     }
 
+    public void setHappiness(float id) {
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putFloat("happiness", id);
+        editor.apply();
+    }
+
+    public float getHappiness() {
+        return prefs.getFloat("happiness", 0f);
+    }
+
     public void setShowGraphics(boolean show) {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putBoolean("showGraphics", show);
@@ -50,6 +70,16 @@ public class SharedItems {
 
     public boolean shouldShowGraphics() {
         return prefs.getBoolean("showGraphics", false);
+    }
+
+    public void setProcessAll(boolean all) {
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putBoolean("shouldProcessAll", all);
+        editor.apply();
+    }
+
+    public boolean shouldProcessAll() {
+        return prefs.getBoolean("shouldProcessAll", false);
     }
 
     public void setResultFound(boolean show) {

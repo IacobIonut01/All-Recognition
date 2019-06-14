@@ -27,6 +27,7 @@ import android.view.Display;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.WindowManager;
+import android.widget.ProgressBar;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresPermission;
@@ -775,7 +776,8 @@ public class CameraSource {
                                         .setRotation(rotation)
                                         .setCameraFacing(facing)
                                         .build(),
-                                graphicOverlay);
+                                graphicOverlay,
+                        new ProgressBar(activity));
                     }
                 } catch (Throwable t) {
                     Log.e(TAG, "Exception thrown from receiver.", t);
