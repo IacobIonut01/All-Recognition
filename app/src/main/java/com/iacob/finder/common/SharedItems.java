@@ -82,6 +82,16 @@ public class SharedItems {
         return prefs.getBoolean("shouldProcessAll", false);
     }
 
+    public void setFacesFound(boolean found) {
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putBoolean("foundFaces", found);
+        editor.apply();
+    }
+
+    public boolean foundFaces() {
+        return prefs.getBoolean("foundFaces", false);
+    }
+
     public void setResultFound(boolean show) {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putBoolean("resultText", show);

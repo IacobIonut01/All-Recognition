@@ -24,7 +24,6 @@ import com.google.firebase.ml.vision.FirebaseVision;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 import com.google.firebase.ml.vision.text.FirebaseVisionText;
 import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer;
-import com.iacob.finder.common.BitmapUtils;
 import com.iacob.finder.common.CameraImageGraphic;
 import com.iacob.finder.common.FrameMetadata;
 import com.iacob.finder.common.GraphicOverlay;
@@ -32,7 +31,6 @@ import com.iacob.finder.common.SharedItems;
 import com.iacob.finder.vision.VisionProcessorBase;
 
 import java.io.IOException;
-import java.nio.ByteBuffer;
 import java.util.List;
 
 public class TextRecognitionProcessor extends VisionProcessorBase<FirebaseVisionText> {
@@ -72,7 +70,7 @@ public class TextRecognitionProcessor extends VisionProcessorBase<FirebaseVision
             graphicOverlay.add(imageGraphic);
         }
         if (results.getText() == null) {
-            return; // TODO: investigate why this is needed
+            return; // TODO: why
         }
         SharedItems sharedItems = new SharedItems(graphicOverlay.getContext());
         //Log.d(TAG, "detected text is: " + results.getText());

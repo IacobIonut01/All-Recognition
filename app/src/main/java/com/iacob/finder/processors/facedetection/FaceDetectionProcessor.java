@@ -29,8 +29,6 @@ import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 import com.google.firebase.ml.vision.face.FirebaseVisionFace;
 import com.google.firebase.ml.vision.face.FirebaseVisionFaceDetector;
 import com.google.firebase.ml.vision.face.FirebaseVisionFaceDetectorOptions;
-import com.iacob.finder.R;
-import com.iacob.finder.common.BitmapUtils;
 import com.iacob.finder.common.CameraImageGraphic;
 import com.iacob.finder.common.FrameMetadata;
 import com.iacob.finder.common.GraphicOverlay;
@@ -38,7 +36,6 @@ import com.iacob.finder.common.SharedItems;
 import com.iacob.finder.vision.VisionProcessorBase;
 
 import java.io.IOException;
-import java.nio.ByteBuffer;
 import java.util.List;
 
 public class FaceDetectionProcessor extends VisionProcessorBase<List<FirebaseVisionFace>> {
@@ -88,6 +85,10 @@ public class FaceDetectionProcessor extends VisionProcessorBase<List<FirebaseVis
             CameraImageGraphic imageGraphic = new CameraImageGraphic(graphicOverlay, originalCameraImage);
             graphicOverlay.add(imageGraphic);
         }
+        if (faces.size() > 0)
+            new SharedItems(graphicOverlay.getContext()).setFacesFound(true);
+        else
+            new SharedItems(graphicOverlay.getContext()).setFacesFound(false);
         for (int i = 0; i < faces.size(); ++i) {
             FirebaseVisionFace face = faces.get(i);
 

@@ -62,6 +62,7 @@ import com.otaliastudios.cameraview.Audio;
 import com.otaliastudios.cameraview.CameraListener;
 import com.otaliastudios.cameraview.CameraView;
 import com.otaliastudios.cameraview.Facing;
+import com.otaliastudios.cameraview.Flash;
 import com.otaliastudios.cameraview.Mode;
 import com.otaliastudios.cameraview.PictureResult;
 import com.otaliastudios.cameraview.SizeSelectors;
@@ -106,7 +107,12 @@ public final class RecognitionActivity extends AppCompatActivity
     private MaterialCardView rotateCard;
     private LinearLayout rotateLayout;
     private Bitmap localBitmap;
+    private Bitmap takenBitmap;
+    private float trotation = 0;
     private float rotation = 0;
+
+    private ToggleButton flashSwitch;
+    BottomSheetBehavior behavior;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,6 +153,11 @@ public final class RecognitionActivity extends AppCompatActivity
         graphicOverlay = findViewById(R.id.fireFaceOverlay);
         visionCPU = new VisionCPU(this, graphicOverlay);
         rotateCard.setVisibility(View.GONE);
+        flashSwitch = findViewById(R.id.flashSwitch);
+        flashSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            camera.setFlash(isChecked ? Flash.ON : Flash.OFF);
+            flashSwitch.setBackgroundResource(isChecked ? R.drawable.ic_flash_on : R.drawable.ic_flash_off);
+        });
         buildRecognition();
 
         findViewById(R.id.settings).setOnClickListener(v -> {
@@ -164,8 +175,12 @@ public final class RecognitionActivity extends AppCompatActivity
 
         SharedItems items = new SharedItems(this);
         loadml.setOnClickListener(v -> {
-            camera.takePicture();
-            items.setShowGraphics(true);
+            if (!items.shouldShowGraphics()) {
+                camera.takePicture();
+                items.setShowGraphics(true);
+            } else {
+                onBackPressed();
+            }
         });
 
         Switch processAllSwitch = findViewById(R.id.processAllSwitch);
@@ -180,15 +195,27 @@ public final class RecognitionActivity extends AppCompatActivity
                     camera.setVisibility(View.GONE);
                     visionCPU.process(flipBitmap(bitmap, camera.getFacing()), mProgress);
                     img.setImageBitmap(flipBitmap(bitmap, camera.getFacing()));
+                    localBitmap = null;
+                    takenBitmap = bitmap;
+                    rotateCard.setVisibility(View.VISIBLE);
                 });
             }
         });
 
         rotateLayout.setOnClickListener(v -> {
-            rotation += 90;
-            Bitmap rotatedbitmap = rotateBitmap(localBitmap, rotation);
-            img.setImageBitmap(rotatedbitmap);
-            visionCPU.process(rotatedbitmap, mProgress);
+            if (mProgress.getVisibility() == View.INVISIBLE) {
+                if (localBitmap != null) {
+                    rotation += 90;
+                    Bitmap rotatedbitmap = rotateBitmap(localBitmap, rotation);
+                    img.setImageBitmap(rotatedbitmap);
+                    visionCPU.process(rotatedbitmap, mProgress);
+                } else if (takenBitmap != null) {
+                    trotation += 90;
+                    Bitmap rotatedbitmapT = rotateBitmap(takenBitmap, trotation);
+                    img.setImageBitmap(rotatedbitmapT);
+                    visionCPU.process(rotatedbitmapT, mProgress);
+                }
+            }
         });
 
         findViewById(R.id.usePhoto).setOnClickListener(v -> {
@@ -258,6 +285,7 @@ public final class RecognitionActivity extends AppCompatActivity
                 try {
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
                     camera.setVisibility(View.GONE);
+                    takenBitmap = null;
                     localBitmap = bitmap;
                     img.setImageBitmap(bitmap);
                     new SharedItems(this).setShowGraphics(true);
@@ -292,8 +320,8 @@ public final class RecognitionActivity extends AppCompatActivity
         MaterialCardView sheet = findViewById(R.id.result_card);
         LinearLayout.LayoutParams params2 = (LinearLayout.LayoutParams) sheet.getLayoutParams();
         params2.bottomMargin = getNavigationBarHeight();
-        sheet.setLayoutParams(params2);
-        BottomSheetBehavior behavior = BottomSheetBehavior.from(findViewById(R.id.result_container));
+        sheet.setLayoutParams(params2);;
+        behavior = BottomSheetBehavior.from(findViewById(R.id.result_container));
         int dp = 196;
         LinearLayout hiddable = findViewById(R.id.hiddableContainer);
         behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
@@ -389,9 +417,11 @@ public final class RecognitionActivity extends AppCompatActivity
             if (isChecked) {
                 camera.setFacing(Facing.FRONT);
                 visionCPU.setFacing(CameraSource.CAMERA_FACING_FRONT);
+                flashSwitch.setVisibility(View.GONE);
             } else {
                 camera.setFacing(Facing.BACK);
                 visionCPU.setFacing(CameraSource.CAMERA_FACING_BACK);
+                flashSwitch.setVisibility(View.VISIBLE);
             }
         }
     }
@@ -452,6 +482,7 @@ public final class RecognitionActivity extends AppCompatActivity
         wasProcessing = false;
         SharedItems sharedItems = new SharedItems(this);
         sharedItems.setText("No text");
+        sharedItems.setHappiness(0);
         sharedItems.resetChartData();
         sharedItems.setShowGraphics(wasProcessing);
     }
@@ -459,6 +490,12 @@ public final class RecognitionActivity extends AppCompatActivity
     @Override
     public void onResume() {
         super.onResume();
+        LinearLayout hiddable = findViewById(R.id.hiddableContainer);
+        if (behavior.getState() == BottomSheetBehavior.STATE_COLLAPSED) {
+            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) hiddable.getLayoutParams();
+            params.topMargin = getNavigationBarHeight();
+            hiddable.setLayoutParams(params);
+        }
     }
 
     @Override

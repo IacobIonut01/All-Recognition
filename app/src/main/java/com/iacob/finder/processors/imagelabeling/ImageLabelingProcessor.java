@@ -25,7 +25,6 @@ import com.google.firebase.ml.vision.FirebaseVision;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 import com.google.firebase.ml.vision.label.FirebaseVisionImageLabel;
 import com.google.firebase.ml.vision.label.FirebaseVisionImageLabeler;
-import com.iacob.finder.common.BitmapUtils;
 import com.iacob.finder.common.CameraImageGraphic;
 import com.iacob.finder.common.FrameMetadata;
 import com.iacob.finder.common.GraphicOverlay;
@@ -33,7 +32,6 @@ import com.iacob.finder.common.SharedItems;
 import com.iacob.finder.vision.VisionProcessorBase;
 
 import java.io.IOException;
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 

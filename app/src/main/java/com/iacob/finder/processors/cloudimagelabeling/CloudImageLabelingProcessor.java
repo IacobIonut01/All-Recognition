@@ -26,16 +26,13 @@ import com.google.firebase.ml.vision.label.FirebaseVisionCloudImageLabelerOption
 import com.google.firebase.ml.vision.label.FirebaseVisionImageLabel;
 import com.google.firebase.ml.vision.label.FirebaseVisionImageLabeler;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
-import com.iacob.finder.common.BitmapUtils;
 import com.iacob.finder.common.CameraImageGraphic;
 import com.iacob.finder.common.FrameMetadata;
 import com.iacob.finder.common.GraphicOverlay;
 import com.iacob.finder.common.SharedItems;
 import com.iacob.finder.vision.VisionProcessorBase;
 
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 /**

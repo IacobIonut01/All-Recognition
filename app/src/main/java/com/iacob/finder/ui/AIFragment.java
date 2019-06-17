@@ -1,5 +1,6 @@
 package com.iacob.finder.ui;
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -38,6 +39,7 @@ public class AIFragment extends RoundedSheetFragment {
         new SharedItems(getContext()).resetChartData();
     }
 
+    @SuppressLint("SetTextI18n")
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -84,12 +86,11 @@ public class AIFragment extends RoundedSheetFragment {
         SharedItems items = new SharedItems(getContext());
         TextView happyprogress = view.findViewById(R.id.hpnsprcs);
         TextView sadprogress = view.findViewById(R.id.sdnprcs);
-        float happiness = Math.abs(items.getHappiness() * 100);
-        String formattedHappiness = String.format(Locale.ENGLISH,"%.1f", happiness);
-        happyprogress.setText(String.format(Locale.ENGLISH, "%s",formattedHappiness  + " %"));
-        float sadness = 100 - Math.abs(items.getHappiness() * 100);
-        String formattedSadness = String.format(Locale.ENGLISH,"%.1f", sadness);
-        sadprogress.setText(String.format(Locale.ENGLISH, "%s",formattedSadness  + " %"));
+        float hp = items.getHappiness() * 100;
+        float happiness = Float.valueOf(String.format(Locale.ENGLISH, "%.0f", hp));
+        happyprogress.setText(String.format(Locale.ENGLISH, "%.0f",happiness)  + " %");
+        float sadness = 100 - happiness;
+        sadprogress.setText(String.format(Locale.ENGLISH, "%.0f",sadness) + " %");
         ProgressBar happ = view.findViewById(R.id.happiness);
         happ.setProgress((int) happiness, true);
         ProgressBar sadd = view.findViewById(R.id.sadness);
@@ -146,7 +147,7 @@ public class AIFragment extends RoundedSheetFragment {
         LinearLayout barcode = view.findViewById(R.id.scanb);
         barcode.setVisibility(items.getBarcode().equals("Invalid barcode") ? View.GONE : View.VISIBLE);
         LinearLayout emotions = view.findViewById(R.id.emo);
-        emotions.setVisibility(items.getHappiness() == 0 ? View.GONE : View.VISIBLE);
+        emotions.setVisibility(!items.foundFaces() ? View.GONE : View.VISIBLE);
         LinearLayout content = view.findViewById(R.id.cnt);
         content.setVisibility(items.getChartData() == null ? View.GONE : View.VISIBLE);
         return view;

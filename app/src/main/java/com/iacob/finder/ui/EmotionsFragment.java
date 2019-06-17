@@ -2,12 +2,10 @@ package com.iacob.finder.ui;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -30,16 +28,24 @@ public class EmotionsFragment extends RoundedSheetFragment {
         SharedItems items = new SharedItems(getContext());
         TextView happyprogress = view.findViewById(R.id.hpnsprcs);
         TextView sadprogress = view.findViewById(R.id.sdnprcs);
-        float happiness = Math.abs(items.getHappiness() * 100);
-        String formattedHappiness = String.format(Locale.ENGLISH,"%.1f", happiness);
-        happyprogress.setText(String.format(Locale.ENGLISH, "%s",formattedHappiness  + " %"));
-        float sadness = 100 - Math.abs(items.getHappiness() * 100);
-        String formattedSadness = String.format(Locale.ENGLISH,"%.1f", sadness);
-        sadprogress.setText(String.format(Locale.ENGLISH, "%s",formattedSadness  + " %"));
+        float hp = items.getHappiness() * 100;
+        float happiness = Float.valueOf(String.format(Locale.ENGLISH, "%.0f", hp));
+        happyprogress.setText(String.format(Locale.ENGLISH, "%.0f",happiness)  + " %");
+        float sadness = 100 - happiness;
+        sadprogress.setText(String.format(Locale.ENGLISH, "%.0f",sadness) + " %");
         ProgressBar happ = view.findViewById(R.id.happiness);
         happ.setProgress((int) happiness, true);
         ProgressBar sadd = view.findViewById(R.id.sadness);
         sadd.setProgress((int) (100-happiness), true);
+        LinearLayout emotionsLayout = view.findViewById(R.id.emos);
+        LinearLayout notfoundLayout = view.findViewById(R.id.no_face);
+        if (items.foundFaces()) {
+            emotionsLayout.setVisibility(View.VISIBLE);
+            notfoundLayout.setVisibility(View.GONE);
+        } else {
+            emotionsLayout.setVisibility(View.GONE);
+            notfoundLayout.setVisibility(View.VISIBLE);
+        }
         view.findViewById(R.id.dismisContainer).setOnClickListener(v -> dismiss());
         return view;
     }

@@ -24,14 +24,11 @@ import com.google.firebase.ml.vision.FirebaseVision;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 import com.google.firebase.ml.vision.text.FirebaseVisionText;
 import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer;
-import com.iacob.finder.common.BitmapUtils;
 import com.iacob.finder.common.CameraImageGraphic;
 import com.iacob.finder.common.FrameMetadata;
 import com.iacob.finder.common.GraphicOverlay;
-import com.iacob.finder.common.SharedItems;
 import com.iacob.finder.vision.VisionProcessorBase;
 
-import java.nio.ByteBuffer;
 import java.util.List;
 
 /**

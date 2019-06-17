@@ -16,8 +16,6 @@ package com.iacob.finder.common;
 import android.graphics.Bitmap;
 import android.widget.ProgressBar;
 
-import androidx.annotation.NonNull;
-
 import java.nio.ByteBuffer;
 
 /** An inferface to process the images with different ML Kit detectors and custom image models. */

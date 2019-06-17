@@ -12,14 +12,12 @@ import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 import com.google.firebase.ml.vision.face.FirebaseVisionFace;
 import com.google.firebase.ml.vision.face.FirebaseVisionFaceDetector;
 import com.google.firebase.ml.vision.face.FirebaseVisionFaceDetectorOptions;
-import com.iacob.finder.common.BitmapUtils;
 import com.iacob.finder.common.CameraImageGraphic;
 import com.iacob.finder.common.FrameMetadata;
 import com.iacob.finder.common.GraphicOverlay;
 import com.iacob.finder.vision.VisionProcessorBase;
 
 import java.io.IOException;
-import java.nio.ByteBuffer;
 import java.util.List;
 
 public class FaceContourDetectorProcessor extends VisionProcessorBase<List<FirebaseVisionFace>> {

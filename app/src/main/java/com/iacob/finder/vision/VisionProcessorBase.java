@@ -14,7 +14,6 @@
 package com.iacob.finder.vision;
 
 import android.graphics.Bitmap;
-import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 
